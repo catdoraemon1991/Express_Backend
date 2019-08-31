@@ -53,7 +53,7 @@ public class Order {
 		this.shippingTime = builder.shippingTime;
 	}
 	
-	public JSONObject toJSONObject() {
+	public String toJSONObject() {
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("userId", userId);
@@ -69,7 +69,7 @@ public class Order {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return obj;
+		return obj.toString();
 	}
 	
 	public static class OrderBuilder {

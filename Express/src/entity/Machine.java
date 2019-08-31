@@ -15,7 +15,7 @@ public class Machine {
 	private Location location;
 	private Set<String>  orderId;
 	
-	public JSONObject toJSONObject() {
+	public String toJSONObject() {
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("machineId", machineId);
@@ -29,7 +29,7 @@ public class Machine {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return obj;
+		return obj.toString();
 	}
 	
 	
