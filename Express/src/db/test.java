@@ -16,15 +16,17 @@ public class test {
 			con.setReadTimeout(5000);
 			
 			int status = con.getResponseCode();
-			System.out.println(status);
+			System.out.println("Status: "+status);
 			BufferedReader in = new BufferedReader(
 					  new InputStreamReader(con.getInputStream()));
-					String inputLine;
-					StringBuffer content = new StringBuffer();
-					while ((inputLine = in.readLine()) != null) {
-					    content.append(inputLine);
-					}
-					in.close();
+			String inputLine;
+			StringBuffer content = new StringBuffer();
+			if (status == 200) {
+				while ((inputLine = in.readLine()) != null) {
+				    content.append(inputLine);
+				}
+				in.close();				
+			}					
 			con.disconnect();
 			System.out.println(content);
 		} catch(Exception e) {
