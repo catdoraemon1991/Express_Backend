@@ -32,6 +32,6 @@ public interface DBConnection {
 	public List<Machine> getMachineByType(List<Machine>, String type);
 	
 	public List<Station> getStation(Location location);
-	
+	//huyufeiceshi
 	
 }
