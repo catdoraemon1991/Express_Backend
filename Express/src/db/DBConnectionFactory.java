@@ -1,5 +1,7 @@
 package db;
 
+import db.firebase.FirebaseConnection;
+
 public class DBConnectionFactory {
 	// This should change based on the pipeline.
 			private static final String DEFAULT_DB = "firebase";
@@ -7,8 +9,8 @@ public class DBConnectionFactory {
 			public static DBConnection getConnection(String db) {
 				switch (db) {
 				case "firebase":
-					//return new FirebaseConnection();
-					return null;
+					return new FirebaseConnection();
+					//return null;
 				case "mysql":
 					//return new MySQLConnection();
 					return null;

@@ -3,7 +3,9 @@ package db;
 import java.util.List;
 
 import entity.Order;
-import entity.Robot;
+import entity.Location;
+import entity.Machine;
+import entity.Station;
 
 public interface DBConnection {
 	/**
@@ -18,20 +20,25 @@ public interface DBConnection {
 	 */
 	public String saveOrder(String userID, Order order );
 	/**
-	 * Get all available robots from a certain station
+	 * Get all available machines from a certain station
 	 * @param stationId
-	 * @return List<Robot>
+	 * @return machines
 	 */
 	public List<Machine> getMachine(String stationId);	
 	/**
-	 * Get all available robots from a certain station
-	 * @param List<Robot>
+	 * Get all available machines of a certain type from a certain station
+	 * @param machines
 	 * @param type
-	 * @return List<Robot>
+	 * @return machines
 	 */
-	public List<Machine> getMachineByType(List<Machine>, String type);
-	
+	public List<Machine> getMachineByType(List<Machine> machines, String type);
+	/**
+	 * Get all stations
+	 * @param List<Machine>
+	 * @param type
+	 * @return List<Machine>
+	 */
 	public List<Station> getStation(Location location);
-	//huyufeiceshi
+	
 	
 }
