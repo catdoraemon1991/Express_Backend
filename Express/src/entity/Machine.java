@@ -13,7 +13,7 @@ public class Machine {
 	private String stationId;
 	private String type;
 	private Location location;
-	private Set<Order>  orders;
+	private Set<String>  orderId;
 	
 	public JSONObject toJSONObject() {
 		JSONObject obj = new JSONObject();
@@ -24,7 +24,7 @@ public class Machine {
 			obj.put("machineId", machineId);
 			obj.put("type", type);
 			obj.put("location", location);
-			obj.put("orders", new JSONArray(orders));
+			obj.put("orderId", new JSONArray(orderId));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,8 +48,8 @@ public class Machine {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public void setOrders(Set<Order> orders) {
-		this.orders = orders;
+	public void setOrderId(Set<String> orderId) {
+		this.orderId = orderId;
 	}
 	public String getMachineId() {
 		return machineId;
@@ -66,8 +66,8 @@ public class Machine {
 	public Location getLocation() {
 		return location;
 	}
-	public Set<Order> getOrders() {
-		return orders;
+	public Set<String> getOrderId() {
+		return orderId;
 	}
 	
 	
