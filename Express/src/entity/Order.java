@@ -5,10 +5,10 @@ import org.json.JSONObject;
 
 public class Order {
 	private String userId;
-	private String shippingAdress;
+	private String shippingAddress;
 	private String destination;
 	private String shippingMethod;
-	private String robotId;
+	private String machineId;
 	private Double departTime;
 	private Double pickupTime;
 	private Double deliveryTime;
@@ -16,8 +16,8 @@ public class Order {
 	public String getUserId() {
 		return userId;
 	}
-	public String getShippingAdress() {
-		return shippingAdress;
+	public String getShippingAddress() {
+		return shippingAddress;
 	}
 	public String getDestination() {
 		return destination;
@@ -25,8 +25,8 @@ public class Order {
 	public String getShippingMethod() {
 		return shippingMethod;
 	}
-	public String getRobotId() {
-		return robotId;
+	public String getMachineId() {
+		return machineId;
 	}
 	public Double getDepartTime() {
 		return departTime;
@@ -43,10 +43,10 @@ public class Order {
 	
 	private Order(OrderBuilder builder) {
 		this.userId = builder.userId;
-		this.shippingAdress = builder.shippingAdress;
+		this.shippingAddress = builder.shippingAddress;
 		this.destination = builder.destination;
 		this.shippingMethod = builder.shippingMethod;
-		this.robotId = builder.robotId;
+		this.machineId = builder.machineId;
 		this.departTime = builder.departTime;
 		this.pickupTime = builder.pickupTime;
 		this.deliveryTime = builder.deliveryTime;
@@ -57,10 +57,10 @@ public class Order {
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("userId", userId);
-			obj.put("shippingAdress", shippingAdress);
+			obj.put("shippingAddress", shippingAddress);
 			obj.put("destination", destination);
 			obj.put("shippingMethod", shippingMethod);
-			obj.put("robotId", robotId);
+			obj.put("machineId", machineId);
 			obj.put("departTime", departTime);
 			obj.put("pickupTime", pickupTime);
 			obj.put("deliveryTime", deliveryTime);
@@ -74,10 +74,10 @@ public class Order {
 	
 	public static class OrderBuilder {
 		private String userId;
-		private String shippingAdress;
+		private String shippingAddress;
 		private String destination;
 		private String shippingMethod;
-		private String robotId;
+		private String machineId;
 		private Double departTime;
 		private Double pickupTime;
 		private Double deliveryTime;
@@ -86,8 +86,8 @@ public class Order {
 		public void setUserId(String userId) {
 			this.userId = userId;
 		}
-		public void setShippingAdress(String shippingAdress) {
-			this.shippingAdress = shippingAdress;
+		public void setShippingAdress(String shippingAddress) {
+			this.shippingAddress = shippingAddress;
 		}
 		public void setDestination(String destination) {
 			this.destination = destination;
@@ -95,8 +95,8 @@ public class Order {
 		public void setShippingMethod(String shippingMethod) {
 			this.shippingMethod = shippingMethod;
 		}
-		public void setRobotId(String robotId) {
-			this.robotId = robotId;
+		public void setMachineId(String machineId) {
+			this.machineId = machineId;
 		}
 		public void setDepartTime(Double departTime) {
 			this.departTime = departTime;
