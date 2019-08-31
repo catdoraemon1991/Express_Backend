@@ -1,7 +1,5 @@
 package entity;
 
-import java.util.Set;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

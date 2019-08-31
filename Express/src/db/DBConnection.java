@@ -1,5 +1,7 @@
 package db;
 
+import entity.Order;
+
 public interface DBConnection {
 	/**
 	 * Close the connection.
