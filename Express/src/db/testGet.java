@@ -5,10 +5,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class test {
+public class testGet {
 	public static void main(String[] args)  {
 		try {
-			URL url = new URL("https://matrix-d2958.firebaseio.com/events/-LmS154_-vOMRsXZNrFa.json");
+			URL url = new URL("https://matrix-d2958.firebaseio.com/user.json");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("Content-Type", "application/json");
@@ -34,7 +34,4 @@ public class test {
 		}
 		
 	}
-	
-	
-	
 }
