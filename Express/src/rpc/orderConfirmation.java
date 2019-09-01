@@ -34,8 +34,12 @@ public class orderConfirmation extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		// step 1: read JSON object from HTTP request 
+		// step 2: From the JSON object, read order information
+		// step 3: calculate departTime, pickupTime and deliveryTime from Google API
+		// step 4: write output from step 2&3 to a new Order class using builder pattern (see entity package)
+		// step 5: write the new Order into database using the saveOrder method in db/DBConnection.java
+		// step 6: set up timer for changing machine status using the updateStatus method in db/DBConnection.java
 	}
 
 }

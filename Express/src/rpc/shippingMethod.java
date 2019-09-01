@@ -26,16 +26,20 @@ public class shippingMethod extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		// 
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		// step 1: read JSON object from HTTP request
+		// step 2: From the JSON object, read shipping address and destination, and package dimension & weight
+		// step 3: read station information from database using the getStation method in db/DBConnection.java
+		// step 4: read robot information from database using the getMachine and getMachineByType method in db/DBConnection.java
+		// step 5: calculate distance & time from GoogleAPI from each station using each machine type
+		// step 6: calculate prices based on package dimension & weight & distance for each station using each machine type
+		// step 7: convert what you get from step 5&6 into JSON and write into response
 	}
 
 }
