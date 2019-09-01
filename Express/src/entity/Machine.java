@@ -24,7 +24,7 @@ public class Machine {
 			obj.put("machineId", machineId);
 			obj.put("type", type);
 			obj.put("location", location);
-			obj.put("orderId", new JSONArray(orderId));
+			//obj.put("orderId", String.join(", ", orderId));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
