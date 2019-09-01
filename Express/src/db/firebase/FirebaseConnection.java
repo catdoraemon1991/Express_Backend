@@ -26,14 +26,12 @@ public class FirebaseConnection implements DBConnection {
 	@Override
 	public String saveOrder(String userID, Order order) {
 		String newOrderId = FirebaseHelper.doPost(FirebaseUtil.host + "order.json", order.toJSONObject());
-		String orderIds = FirebaseHelper.doGet(FirebaseUtil.host + order.getUserId() + "/orderId.json") ;
-		// orderIds + newOrderId;
-		String addUserUrl = FirebaseUtil.host + order.getUserId() + "/orderId/" + newOrderId + ".json";
+		String addUserUrl = FirebaseUtil.host + "user/" + order.getUserId() + "/orderId/" + newOrderId + ".json";
 		Integer userStatus = FirebaseHelper.doPut(addUserUrl, "{\" \": \" \"}");
-		String addMachineUrl = FirebaseUtil.host + order.getMachineId() + "/orderId/" + newOrderId + ".json";
+		String addMachineUrl = FirebaseUtil.host + "machine/" + order.getMachineId() + "/orderId/" + newOrderId + ".json";
 		Integer machineOrderStatus = FirebaseHelper.doPut(addMachineUrl, "{\" \": \" \"}");
 		String newStatus = "{\"onUse\": \" \"}";
-		Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + order.getMachineId() + "/orderId/status.json", newStatus);
+		Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + order.getMachineId() + "/status.json", newStatus);
 		return newOrderId;
 	}
 
@@ -48,9 +46,9 @@ public class FirebaseConnection implements DBConnection {
 				String key = keys.next();
 				if (machinesJSON.get(key) instanceof JSONObject) {
 			           JSONObject location = (JSONObject) machinesJSON.get(key); 
-			           String status = location.getString("status");
 			           String stationIdOrg = location.getString("stationId");
-			           if (status.equals("OK") && stationIdOrg.equals(stationId)) {
+			           JSONObject statusJSON = (JSONObject) location.get("status");			           
+			           if (statusJSON.isNull("OK") && stationIdOrg.equals(stationId)) {
 			        	   String machineId = key;
 			        	   String type = location.getString("type");
 			        	   Double latitude = Double.valueOf(location.getString("latitude"));
