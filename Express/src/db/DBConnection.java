@@ -39,6 +39,12 @@ public interface DBConnection {
 	 * @return List<Machine>
 	 */
 	public List<Station> getStation(Location location);
+	/**
+	 * Update order status to machine
+	 * @param orderId
+	 * @param machineId
+	 */
+	public void updateStatus(String orderId,String machineId) ;
 	
 	
 }

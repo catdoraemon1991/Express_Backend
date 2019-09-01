@@ -115,4 +115,23 @@ public class FirebaseConnection implements DBConnection {
 		return stations;
 	}
 
+	@Override
+	public void updateStatus(String orderId, String machineId) {
+		String orderIdUrl = FirebaseUtil.host + "machine/" + machineId + "/orderId/" + orderId + ".json";
+		Integer deleteStatus = FirebaseHelper.doDelete(orderIdUrl);
+		String machine = FirebaseHelper.doGet(FirebaseUtil.host + "machine/" + machineId + ".json");
+		JSONObject machineJSON;
+		try {
+			machineJSON = new JSONObject(machine);
+			if (machineJSON.isNull("orderId")) {
+				String newStatus = "{\"OK\": \" \"}";
+				Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + machineId + "/status.json", newStatus);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
+	}
+
 }

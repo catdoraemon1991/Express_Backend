@@ -5,6 +5,25 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import entity.Location;
+import entity.Machine;
+import entity.Station;
 
 public class FirebaseHelper {
 	public static String doGet(String urlLink) {
@@ -137,15 +156,39 @@ public class FirebaseHelper {
 		
 	}
 	public static void main(String[] args) {
-		String  getUrl = FirebaseUtil.host + "user.json";
-		String jsonInputString = "{\"name\": \"Doraemon\", \"job\": \"Best idol\"}";
-		String postUrl = FirebaseUtil.host + "user.json";
+		String  getUrl = FirebaseUtil.host + "machine.json";
+		//String jsonInputString = "{\"name\": \"Doraemon\", \"job\": \"Best idol\"}";
+		String jsonInputString = "{\" \": \" \"}";
+		String postUrl = FirebaseUtil.host + "user2.json";
 		String deleteUrl = FirebaseUtil.host + "user/-LnddvEBLrD4P4vntNLh.json";
-		String putUrl = FirebaseUtil.host + "user/-LnddvEBLrD4P4vntNLh.json";
+		String putUrl = FirebaseUtil.host + "user/" + "-LnddvEBLrD4P4vntNLh" + "/orderId/" + "456" + ".json";
 		//String resGet = doGet(getUrl);
+		//System.out.println(resGet);
 		//String resPost = doPost(postUrl, jsonInputString);
 		//Integer resDelete =  doDelete(deleteUrl);
-		Integer resPut = doPut(putUrl, jsonInputString);
-		System.out.println(resPut);
+		//Integer resPut = doPut(putUrl, jsonInputString);
+		
+//		String[] array = {"1","2","3","4"};
+//		String toArray = "1,2,3";
+//		System.out.println(toArray);
+//		String[] test = toArray.split(",");
+//		System.out.println(test[0]);
+		
+		Calendar calendar1 = Calendar.getInstance(TimeZone.getTimeZone("PST"));
+
+		long currentDate = calendar1.getTimeInMillis();
+		calendar1.setTimeInMillis(currentDate+1000*3);	
+		//System.out.println(currentDate);
+		Date date = calendar1.getTime();
+		System.out.println(date);
+		
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			public void run() {
+				System.out.println("Task performed on: " + new Date() + "n" +
+			              "Thread's name: " + Thread.currentThread().getName());
+			}
+		};
+		timer.schedule(task, date);
 	}
 }
