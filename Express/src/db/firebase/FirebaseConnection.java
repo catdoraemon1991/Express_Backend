@@ -25,13 +25,26 @@ public class FirebaseConnection implements DBConnection {
 
 	@Override
 	public String saveOrder(String userID, Order order) {
-		String newOrderId = FirebaseHelper.doPost(FirebaseUtil.host + "order.json", order.toJSONObject());
-		String addUserUrl = FirebaseUtil.host + "user/" + order.getUserId() + "/orderId/" + newOrderId + ".json";
-		Integer userStatus = FirebaseHelper.doPut(addUserUrl, "{\" \": \" \"}");
-		String addMachineUrl = FirebaseUtil.host + "machine/" + order.getMachineId() + "/orderId/" + newOrderId + ".json";
-		Integer machineOrderStatus = FirebaseHelper.doPut(addMachineUrl, "{\" \": \" \"}");
-		String newStatus = "{\"onUse\": \" \"}";
-		Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + order.getMachineId() + "/status.json", newStatus);
+		String postOrder = FirebaseHelper.doPost(FirebaseUtil.host + "order.json", order.toJSONObject());
+		
+		String newOrderId = "";
+		try {
+			JSONObject orderJSON = new JSONObject(postOrder);
+			if (! orderJSON.isNull("name")) {
+				newOrderId = orderJSON.getString("name");
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (newOrderId != "") {
+			String addUserUrl = FirebaseUtil.host + "user/" + order.getUserId() + "/orderId/" + newOrderId + ".json";
+			Integer userStatus = FirebaseHelper.doPut(addUserUrl, "{\" \": \" \"}");
+			String addMachineUrl = FirebaseUtil.host + "machine/" + order.getMachineId() + "/orderId/" + newOrderId + ".json";
+			Integer machineOrderStatus = FirebaseHelper.doPut(addMachineUrl, "{\" \": \" \"}");
+			String newStatus = "{\"onUse\": \" \"}";
+			Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + order.getMachineId() + "/status.json", newStatus);
+		}	
 		return newOrderId;
 	}
 
