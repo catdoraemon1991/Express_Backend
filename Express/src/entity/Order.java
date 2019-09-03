@@ -9,10 +9,10 @@ public class Order {
 	private String destination;
 	private String shippingMethod;
 	private String machineId;
-	private Double departTime;
-	private Double pickupTime;
-	private Double deliveryTime;
-	private Double shippingTime;
+	private Long departTime;
+	private Long pickupTime;
+	private Long deliveryTime;
+	private Long shippingTime;
 	public String getUserId() {
 		return userId;
 	}
@@ -28,16 +28,16 @@ public class Order {
 	public String getMachineId() {
 		return machineId;
 	}
-	public Double getDepartTime() {
+	public Long getDepartTime() {
 		return departTime;
 	}
-	public Double getPickupTime() {
+	public Long getPickupTime() {
 		return pickupTime;
 	}
-	public Double getDeliveryTime() {
+	public Long getDeliveryTime() {
 		return deliveryTime;
 	}
-	public Double getShippingTime() {
+	public Long getShippingTime() {
 		return shippingTime;
 	}
 	
@@ -61,10 +61,10 @@ public class Order {
 			obj.put("destination", destination);
 			obj.put("shippingMethod", shippingMethod);
 			obj.put("machineId", machineId);
-			obj.put("departTime", departTime);
-			obj.put("pickupTime", pickupTime);
-			obj.put("deliveryTime", deliveryTime);
-			obj.put("shippingTime", shippingTime);
+			obj.put("departTime", departTime.toString());
+			obj.put("pickupTime", pickupTime.toString());
+			obj.put("deliveryTime", deliveryTime.toString());
+			obj.put("shippingTime", shippingTime.toString());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,10 +78,10 @@ public class Order {
 		private String destination;
 		private String shippingMethod;
 		private String machineId;
-		private Double departTime;
-		private Double pickupTime;
-		private Double deliveryTime;
-		private Double shippingTime;
+		private Long departTime;
+		private Long pickupTime;
+		private Long deliveryTime;
+		private Long shippingTime;
 		
 		public void setUserId(String userId) {
 			this.userId = userId;
@@ -98,16 +98,16 @@ public class Order {
 		public void setMachineId(String machineId) {
 			this.machineId = machineId;
 		}
-		public void setDepartTime(Double departTime) {
+		public void setDepartTime(Long departTime) {
 			this.departTime = departTime;
 		}
-		public void setPickupTime(Double pickupTime) {
+		public void setPickupTime(Long pickupTime) {
 			this.pickupTime = pickupTime;
 		}
-		public void setDeliveryTime(Double deliveryTime) {
+		public void setDeliveryTime(Long deliveryTime) {
 			this.deliveryTime = deliveryTime;
 		}
-		public void setShippingTime(Double shippingTime) {
+		public void setShippingTime(Long shippingTime) {
 			this.shippingTime = shippingTime;
 		}		
 		
