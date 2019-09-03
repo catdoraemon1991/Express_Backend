@@ -61,7 +61,7 @@ public class FirebaseConnection implements DBConnection {
 			           JSONObject location = (JSONObject) machinesJSON.get(key); 
 			           String stationIdOrg = location.getString("stationId");
 			           JSONObject statusJSON = (JSONObject) location.get("status");			           
-			           if (statusJSON.isNull("OK") && stationIdOrg.equals(stationId)) {
+			           if (! statusJSON.isNull("OK") && stationIdOrg.equals(stationId)) {
 			        	   String machineId = key;
 			        	   String type = location.getString("type");
 			        	   Double latitude = Double.valueOf(location.getString("latitude"));
@@ -145,6 +145,13 @@ public class FirebaseConnection implements DBConnection {
 			e.printStackTrace();
 		}		
 		
+	}
+
+	@Override
+	public void machineOccupied(String machineId) {
+		// TODO Auto-generated method stub
+		String newStatus = "{\"onUse\": \" \"}";
+		Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + machineId + "/status.json", newStatus);
 	}
 
 }

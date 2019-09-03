@@ -45,6 +45,9 @@ public interface DBConnection {
 	 * @param machineId
 	 */
 	public void updateStatus(String orderId,String machineId) ;
-	
-	
+	/**
+	 * Mark machine as occupied
+	 * @param machineId
+	 */
+	public void machineOccupied(String machineId) ;
 }
