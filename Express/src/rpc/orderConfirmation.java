@@ -63,9 +63,9 @@ public class orderConfirmation extends HttpServlet {
 		String destination = "";
 		String shippingAddress = "";
 		Long shippingTime = null;
-		Long departTime = 1234L; //null;
-		Long pickupTime = 5678910L; //null;
-		Long deliveryTime = 1567476550084L;//null;
+		Long departTime = null;
+		Long pickupTime = null;
+		Long deliveryTime = null;
 		try {
 			if (! orderInfo.isNull("userId")) {
 				userId = orderInfo.getString("userId");
@@ -130,11 +130,14 @@ public class orderConfirmation extends HttpServlet {
 		// step 4: calculate departTime, pickupTime and deliveryTime from Google API
 		Calendar ship = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 		Calendar back = Calendar.getInstance(TimeZone.getTimeZone("PST"));
-		long currentDate = back.getTimeInMillis();
-		ship.setTimeInMillis(shippingTime);
-		//deliver.setTimeInMillis(deliveryTime);
-		back.setTimeInMillis(currentDate+1000*30);
-		Date shipDate = ship.getTime();
+		long currentDate = ship.getTimeInMillis();
+		departTime = Math.max(currentDate, shippingTime);
+		
+		pickupTime = 1567476550084L; //
+		deliveryTime = 1567476550084L; //
+		Long backTime = currentDate+1000L*30L; //
+		
+		back.setTimeInMillis(backTime);
 		Date backDate = back.getTime();
 		// step 5: write output from previous steps to a new Order class using builder pattern (see entity package)
 		newOrder.setUserId(userId);
