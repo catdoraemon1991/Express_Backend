@@ -63,9 +63,9 @@ public class orderConfirmation extends HttpServlet {
 		String destination = "";
 		String shippingAddress = "";
 		Long shippingTime = null;
-		Long departTime = (long) 1234; //null;
-		Long pickupTime = (long) 5678910; //null;
-		Long deliveryTime = (long) 11121314;//null;
+		Long departTime = 1234L; //null;
+		Long pickupTime = 5678910L; //null;
+		Long deliveryTime = 1567476550084L;//null;
 		try {
 			if (! orderInfo.isNull("userId")) {
 				userId = orderInfo.getString("userId");
@@ -125,11 +125,17 @@ public class orderConfirmation extends HttpServlet {
 			}
 		}else {
 			machineId = machines.get(0).getMachineId();
-			//db.machineOccupied(machineId);  //uncomment this		
+			db.machineOccupied(machineId);  //uncomment this		
 		}
 		// step 4: calculate departTime, pickupTime and deliveryTime from Google API
 		Calendar ship = Calendar.getInstance(TimeZone.getTimeZone("PST"));
+		Calendar back = Calendar.getInstance(TimeZone.getTimeZone("PST"));
+		long currentDate = back.getTimeInMillis();
 		ship.setTimeInMillis(shippingTime);
+		//deliver.setTimeInMillis(deliveryTime);
+		back.setTimeInMillis(currentDate+1000*30);
+		Date shipDate = ship.getTime();
+		Date backDate = back.getTime();
 		// step 5: write output from previous steps to a new Order class using builder pattern (see entity package)
 		newOrder.setUserId(userId);
 		newOrder.setShippingAdress(shippingAddress);
@@ -142,8 +148,8 @@ public class orderConfirmation extends HttpServlet {
 		newOrder.setDeliveryTime(deliveryTime);
 		Order order = newOrder.build();
 		// step 6: write the new Order into database using the saveOrder method in db/DBConnection.java
-		String newOrderId = "1234567";
-		//String newOrderId = db.saveOrder(userId, order); //uncomment this
+		//String newOrderId = "1234567";
+		String newOrderId = db.saveOrder(userId, order); //uncomment this
 		
 		// step 7: return order Id & machine status	
 		if (newOrderId != "") {
@@ -157,14 +163,17 @@ public class orderConfirmation extends HttpServlet {
 		}
 		// step 8: set up timer for changing machine status using the updateStatus method in db/DBConnection.java
 		Timer timer = new Timer();
+		final String machineIdF = machineId;
 		TimerTask task = new TimerTask() {
+			@Override
 			public void run() {
-				//db.updateStatus(newOrderId, machineId);
+				System.out.println("This is the scheduled update");
+				db.updateStatus(newOrderId, machineIdF);  //uncomment this
 			}
 		};
-		//timer.schedule(task, date);
+		timer.schedule(task, backDate);
 
-		System.out.println(machineId);
+		System.out.println(backDate);
 	}
 
 }
