@@ -131,10 +131,11 @@ public class orderConfirmation extends HttpServlet {
 		Calendar ship = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 		Calendar back = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 		long currentDate = ship.getTimeInMillis();
-		departTime = Math.max(currentDate, shippingTime);
+		long processing = 1000L * 60L * 2L;
+		departTime = Math.max(currentDate + processing, shippingTime);
 		
-		pickupTime = 1567476550084L; //
-		deliveryTime = 1567476550084L; //
+		pickupTime = departTime + 1000L * 60L * 25L; //
+		deliveryTime = pickupTime + 1000L * 60L * 25L; //
 		Long backTime = currentDate+1000L*30L; //
 		
 		back.setTimeInMillis(backTime);
