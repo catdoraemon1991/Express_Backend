@@ -20,9 +20,12 @@ import org.json.JSONObject;
 
 import db.DBConnection;
 import db.DBConnectionFactory;
+import entity.Location;
 import entity.Machine;
 import entity.Order;
-import entity.Order.OrderBuilder;;
+import entity.Order.OrderBuilder;
+import entity.Station;
+import external.GoogleAPI;;
 
 /**
  * Servlet implementation class orderConfirmation
@@ -128,15 +131,27 @@ public class orderConfirmation extends HttpServlet {
 			db.machineOccupied(machineId);  //uncomment this		
 		}
 		// step 4: calculate departTime, pickupTime and deliveryTime from Google API
+		double[] shipLatLon = GoogleAPI.addr_to_lonlat(shippingAddress);
+		double[] desLatLon = GoogleAPI.addr_to_lonlat(destination);
+		Location stationLoc = db.getStationById(db.getStation(new Location()), stationId).getLocation();
+		
+		double stationToShip = GoogleAPI.road_time(String.valueOf(stationLoc.getLatitude()), String.valueOf(stationLoc.getLongitude()),
+				String.valueOf(shipLatLon[0]),String.valueOf(shipLatLon[1]));
+		double shipToDes = GoogleAPI.road_time(String.valueOf(desLatLon[0]),String.valueOf(desLatLon[1]),
+				String.valueOf(shipLatLon[0]),String.valueOf(shipLatLon[1]));
+		double desToStation = GoogleAPI.road_time(String.valueOf(desLatLon[0]),String.valueOf(desLatLon[1]),
+				String.valueOf(stationLoc.getLatitude()), String.valueOf(stationLoc.getLongitude()));
+		
 		Calendar ship = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 		Calendar back = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 		long currentDate = ship.getTimeInMillis();
 		long processing = 1000L * 60L * 2L;
-		departTime = Math.max(currentDate + processing, shippingTime);
 		
-		pickupTime = departTime + 1000L * 60L * 25L; //
-		deliveryTime = pickupTime + 1000L * 60L * 25L; //
-		Long backTime = currentDate+1000L*30L; //
+		departTime = Math.max(currentDate + processing, shippingTime);	
+		pickupTime = departTime + 1000L * 60L * Math.round(stationToShip); 
+		deliveryTime = pickupTime + 1000L * 60L * Math.round(shipToDes); 
+		Long backTime = currentDate + 1000L * 30L; //
+		//Long backTime = deliveryTime + 1000L * 60L * Math.round(desToStation); //
 		
 		back.setTimeInMillis(backTime);
 		Date backDate = back.getTime();
@@ -178,6 +193,9 @@ public class orderConfirmation extends HttpServlet {
 		timer.schedule(task, backDate);
 
 		System.out.println(backDate);
+		System.out.println("stationToShip:" + String.valueOf(stationToShip) 
+		+ ",shipToDes: " + String.valueOf(shipToDes) 
+		+ ",desToStation:" + String.valueOf(desToStation));
 	}
 
 }

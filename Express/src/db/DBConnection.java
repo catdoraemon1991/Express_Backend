@@ -40,6 +40,13 @@ public interface DBConnection {
 	 */
 	public List<Station> getStation(Location location);
 	/**
+	 * Get all stations
+	 * @param List<Machine>
+	 * @param stationId
+	 * @return Station
+	 */
+	public Station getStationById(List<Station> stations,String stationId);
+	/**
 	 * Update order status to machine
 	 * @param orderId
 	 * @param machineId

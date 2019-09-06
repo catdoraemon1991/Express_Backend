@@ -163,6 +163,7 @@ public class FirebaseHelper {
 		String deleteUrl = FirebaseUtil.host + "user/-LnddvEBLrD4P4vntNLh.json";
 		String putUrl = FirebaseUtil.host + "user/" + "-LnddvEBLrD4P4vntNLh" + "/orderId/" + "456" + ".json";
 		//String resGet = doGet(getUrl);
+		//JSONObject newjson = new JSONObject(resGet);
 		//System.out.println(resGet);
 		//String resPost = doPost(postUrl, jsonInputString);
 		//Integer resDelete =  doDelete(deleteUrl);
