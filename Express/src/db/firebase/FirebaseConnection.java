@@ -154,4 +154,16 @@ public class FirebaseConnection implements DBConnection {
 		Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + machineId + "/status.json", newStatus);
 	}
 
+	@Override
+	public Station getStationById(List<Station> stations, String stationId) {
+		if (stations.size() > 0) {
+			for (Station station : stations) {
+				if (station.getStationId().equals(stationId)) {
+					return station;
+				}
+			}
+		}
+		return null;
+	}
+
 }
