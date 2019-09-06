@@ -135,12 +135,12 @@ public class orderConfirmation extends HttpServlet {
 		double[] desLatLon = GoogleAPI.addr_to_lonlat(destination);
 		Location stationLoc = db.getStationById(db.getStation(new Location()), stationId).getLocation();
 		
-		double stationToShip = GoogleAPI.road_time(String.valueOf(stationLoc.getLatitude()), String.valueOf(stationLoc.getLongitude()),
-				String.valueOf(shipLatLon[0]),String.valueOf(shipLatLon[1]));
-		double shipToDes = GoogleAPI.road_time(String.valueOf(desLatLon[0]),String.valueOf(desLatLon[1]),
-				String.valueOf(shipLatLon[0]),String.valueOf(shipLatLon[1]));
-		double desToStation = GoogleAPI.road_time(String.valueOf(desLatLon[0]),String.valueOf(desLatLon[1]),
-				String.valueOf(stationLoc.getLatitude()), String.valueOf(stationLoc.getLongitude()));
+		double stationToShip = GoogleAPI.duration(String.valueOf(stationLoc.getLatitude()), String.valueOf(stationLoc.getLongitude()),
+				String.valueOf(shipLatLon[0]),String.valueOf(shipLatLon[1]),type);
+		double shipToDes = GoogleAPI.duration(String.valueOf(desLatLon[0]),String.valueOf(desLatLon[1]),
+				String.valueOf(shipLatLon[0]),String.valueOf(shipLatLon[1]),type);
+		double desToStation = GoogleAPI.duration(String.valueOf(desLatLon[0]),String.valueOf(desLatLon[1]),
+				String.valueOf(stationLoc.getLatitude()), String.valueOf(stationLoc.getLongitude()),type);
 		
 		Calendar ship = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 		Calendar back = Calendar.getInstance(TimeZone.getTimeZone("PST"));

@@ -22,7 +22,14 @@ public class GoogleAPI {
 	public static double road_time(String startLat, String startLon,String desLat, String desLon) {
 		return 25.0;
 	}
-
+	// method 4: 
+	public static double duration(String startLat, String startLon,String desLat, String desLon, String machineType) {
+		if (machineType.equals("robot")) {
+			return road_time(startLat, startLon, desLat, desLon);
+		}else {
+			return sphr_time(startLat, startLon, desLat, desLon);
+		}
+	}
 	
 	public static void main(String[] args) {
 		DBConnection db = DBConnectionFactory.getConnection();
