@@ -8,6 +8,11 @@ public class Station {
 		this.location = location;
 	}
 	
+//	public Station() {
+//		this.stationId = "";
+//		this.location = null;
+//	}
+	
 	public void setStationId(String stationId) {
 		this.stationId = stationId;
 	}

@@ -30,6 +30,15 @@ public class GoogleAPI {
 			return sphr_time(startLat, startLon, desLat, desLon);
 		}
 	}
+	// method 5: calculate price
+	public static double price(double durationTime, double dimensionL, double dimensionW, 
+			double dimensionH, double weightLB, double weightOC) {
+		double volume = dimensionL * dimensionW * dimensionH;
+		double finalPrice = durationTime / 2.0 +  volume * 0.01 + weightLB * 0.5 + weightOC * 0.5;
+		return finalPrice;	
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		DBConnection db = DBConnectionFactory.getConnection();
