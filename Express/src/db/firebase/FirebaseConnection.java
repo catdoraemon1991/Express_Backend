@@ -37,7 +37,9 @@ public class FirebaseConnection implements DBConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//equals,
 		if (newOrderId != "") {
+			//String.format("My answer is %.8f", 47.65734); format pattern instead of hard code
 			String addUserUrl = FirebaseUtil.host + "user/" + order.getUserId() + "/orderId/" + newOrderId + ".json";
 			Integer userStatus = FirebaseHelper.doPut(addUserUrl, "{\" \": \" \"}");
 			String addMachineUrl = FirebaseUtil.host + "machine/" + order.getMachineId() + "/orderId/" + newOrderId + ".json";
@@ -51,7 +53,10 @@ public class FirebaseConnection implements DBConnection {
 	@Override
 	public List<Machine> getMachine(String stationId) {
 		List<Machine> machines = new ArrayList<>();
+		//same
 		String allMachine = FirebaseHelper.doGet(FirebaseUtil.host + "/machine.json") ;
+
+		// consider the Gson library https://github.com/google/gson
 		try {
 			JSONObject machinesJSON =  new JSONObject(allMachine);
 			Iterator<String> keys = machinesJSON.keys();

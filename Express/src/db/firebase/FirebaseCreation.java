@@ -10,6 +10,7 @@ public class FirebaseCreation {
 	}
 	
 	public static void addRobot (int numsRobot) {
+		// there must be class to json library
 		try {
 			//add Robot
 			for (int i=0; i<numsRobot; i++) {

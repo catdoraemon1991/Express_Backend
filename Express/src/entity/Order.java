@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Order {
+
+	// builder patter
 	private String userId;
 	private String shippingAddress;
 	private String destination;
@@ -52,7 +54,8 @@ public class Order {
 		this.deliveryTime = builder.deliveryTime;
 		this.shippingTime = builder.shippingTime;
 	}
-	
+
+	// consider google Gson library
 	public String toJSONObject() {
 		JSONObject obj = new JSONObject();
 		try {
@@ -73,6 +76,7 @@ public class Order {
 	}
 	
 	public static class OrderBuilder {
+		// nice one.
 		private String userId;
 		private String shippingAddress;
 		private String destination;

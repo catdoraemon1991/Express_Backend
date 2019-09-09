@@ -1,6 +1,8 @@
 package entity;
 
 public class Station {
+
+	// stationId, location should be final
 	private String stationId;
 	Location location;
 	public Station(String stationId, Location location) {

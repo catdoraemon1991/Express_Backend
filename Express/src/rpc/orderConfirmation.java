@@ -70,6 +70,7 @@ public class orderConfirmation extends HttpServlet {
 		Long pickupTime = null;
 		Long deliveryTime = null;
 		try {
+			//magic string should be final static and define in constant class.
 			if (! orderInfo.isNull("userId")) {
 				userId = orderInfo.getString("userId");
 			}

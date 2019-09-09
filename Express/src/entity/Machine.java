@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Machine {
+
+	//let's use the builder pattern like order
 	private String machineId;
 	private String status;
 	private String stationId;

@@ -30,6 +30,9 @@ public class FirebaseHelper {
 		StringBuffer content = new StringBuffer();
 		try {
 			URL url = new URL(urlLink);
+
+			// duplicate with post and delete for most of codes.
+			// create a function doHttP(String url, PostMethod method);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("Content-Type", "application/json");

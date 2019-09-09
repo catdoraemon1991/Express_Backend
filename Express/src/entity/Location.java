@@ -1,6 +1,8 @@
 package entity;
 
 public class Location {
+
+	//final fields
 	private Double latitude;
 	private Double longitude;
 	
