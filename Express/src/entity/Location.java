@@ -1,8 +1,8 @@
 package entity;
 
 public class Location {
-	private Double latitude;
-	private Double longitude;
+	private final Double latitude;
+	private final Double longitude;
 	
 	public Location(Double latitude, Double longitude) {
 		this.latitude =  latitude;
@@ -11,14 +11,6 @@ public class Location {
 	public Location() {
 		this.latitude =  null;
 		this.longitude = null;
-	}
-	
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
-	}
-
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
 	}
 
 	public double getLatitude() {
