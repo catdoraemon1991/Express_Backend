@@ -14,6 +14,7 @@ import entity.Location;
 import entity.Machine;
 import entity.Order;
 import entity.Station;
+import rpc.HTTPHelper;
 
 public class FirebaseConnection implements DBConnection {
 
@@ -25,7 +26,7 @@ public class FirebaseConnection implements DBConnection {
 
 	@Override
 	public String saveOrder(String userID, Order order) {
-		String postOrder = FirebaseHelper.doPost(FirebaseUtil.host + "order.json", order.toJSONObject());
+		String postOrder = HTTPHelper.doHTTP(FirebaseUtil.host + "order.json", order.toJSONObject(),"POST");
 		
 		String newOrderId = "";
 		try {
@@ -39,11 +40,11 @@ public class FirebaseConnection implements DBConnection {
 		}
 		if (newOrderId != "") {
 			String addUserUrl = FirebaseUtil.host + "user/" + order.getUserId() + "/orderId/" + newOrderId + ".json";
-			Integer userStatus = FirebaseHelper.doPut(addUserUrl, "{\" \": \" \"}");
+			String userStatus = HTTPHelper.doHTTP(addUserUrl, "{\" \": \" \"}","PUT");
 			String addMachineUrl = FirebaseUtil.host + "machine/" + order.getMachineId() + "/orderId/" + newOrderId + ".json";
-			Integer machineOrderStatus = FirebaseHelper.doPut(addMachineUrl, "{\" \": \" \"}");
+			String machineOrderStatus = HTTPHelper.doHTTP(addMachineUrl, "{\" \": \" \"}","PUT");
 			String newStatus = "{\"onUse\": \" \"}";
-			Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + order.getMachineId() + "/status.json", newStatus);
+			String changeStatus = HTTPHelper.doHTTP(FirebaseUtil.host + "machine/" + order.getMachineId() + "/status.json", newStatus,"PUT");
 		}	
 		return newOrderId;
 	}
@@ -51,7 +52,7 @@ public class FirebaseConnection implements DBConnection {
 	@Override
 	public List<Machine> getMachine(String stationId) {
 		List<Machine> machines = new ArrayList<>();
-		String allMachine = FirebaseHelper.doGet(FirebaseUtil.host + "/machine.json") ;
+		String allMachine = HTTPHelper.doHTTP(FirebaseUtil.host + "/machine.json",null,"GET") ;
 		try {
 			JSONObject machinesJSON =  new JSONObject(allMachine);
 			Iterator<String> keys = machinesJSON.keys();
@@ -107,7 +108,7 @@ public class FirebaseConnection implements DBConnection {
 	@Override
 	public List<Station> getStation(Location location) {
 		List<Station> stations = new ArrayList<>();
-		String stationString = FirebaseHelper.doGet(FirebaseUtil.host + "/station.json") ;
+		String stationString = HTTPHelper.doHTTP(FirebaseUtil.host + "/station.json",null,"GET") ;
 		try {
 			JSONObject stationJSON = new JSONObject(stationString);
 			Iterator<String> keys = stationJSON.keys();
@@ -131,14 +132,14 @@ public class FirebaseConnection implements DBConnection {
 	@Override
 	public void updateStatus(String orderId, String machineId) {
 		String orderIdUrl = FirebaseUtil.host + "machine/" + machineId + "/orderId/" + orderId + ".json";
-		Integer deleteStatus = FirebaseHelper.doDelete(orderIdUrl);
-		String machine = FirebaseHelper.doGet(FirebaseUtil.host + "machine/" + machineId + ".json");
+		String deleteStatus = HTTPHelper.doHTTP(orderIdUrl,null,"DELETE");
+		String machine = HTTPHelper.doHTTP(FirebaseUtil.host + "machine/" + machineId + ".json",null,"GET");
 		JSONObject machineJSON;
 		try {
 			machineJSON = new JSONObject(machine);
 			if (machineJSON.isNull("orderId")) {
 				String newStatus = "{\"OK\": \" \"}";
-				Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + machineId + "/status.json", newStatus);
+				String changeStatus = HTTPHelper.doHTTP(FirebaseUtil.host + "machine/" + machineId + "/status.json", newStatus,"PUT");
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -151,7 +152,7 @@ public class FirebaseConnection implements DBConnection {
 	public void machineOccupied(String machineId) {
 		// TODO Auto-generated method stub
 		String newStatus = "{\"onUse\": \" \"}";
-		Integer changeStatus = FirebaseHelper.doPut(FirebaseUtil.host + "machine/" + machineId + "/status.json", newStatus);
+		String changeStatus = HTTPHelper.doHTTP(FirebaseUtil.host + "machine/" + machineId + "/status.json", newStatus,"PUT");
 	}
 
 	@Override
