@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import db.DBConnection;
 import db.DBConnectionFactory;
+import db.generateID;
 import entity.Location;
 import entity.Machine;
 import entity.Order;
@@ -105,7 +106,7 @@ public class orderConfirmation extends HttpServlet {
 		// step 3: calculate robot availability, select a robot and update robot status
 		DBConnection db = DBConnectionFactory.getConnection();
 		List<Machine> machines = new ArrayList<>();
-		if (stationId != "" && type != "") {
+		if (! stationId.equals("") && type != "") {
 			machines = db.getMachineByType(db.getMachine(stationId), type);
 		}else {
 			try {
@@ -156,6 +157,8 @@ public class orderConfirmation extends HttpServlet {
 		back.setTimeInMillis(backTime);
 		Date backDate = back.getTime();
 		// step 5: write output from previous steps to a new Order class using builder pattern (see entity package)
+		String newOrderId = generateID.randomUUID(16);
+		newOrder.setOrderId(newOrderId);
 		newOrder.setUserId(userId);
 		newOrder.setShippingAdress(shippingAddress);
 		newOrder.setDestination(destination);
@@ -168,10 +171,10 @@ public class orderConfirmation extends HttpServlet {
 		Order order = newOrder.build();
 		// step 6: write the new Order into database using the saveOrder method in db/DBConnection.java
 		//String newOrderId = "1234567";
-		String newOrderId = db.saveOrder(userId, order); //uncomment this
+		String newOrderStatus = db.saveOrder(userId, order); //uncomment this
 		
 		// step 7: return order Id & machine status	
-		if (newOrderId != "") {
+		if (newOrderStatus.equals(HTTPUtil.StatusOK)) {
 			try {
 				resJSON.put("orderId", newOrderId);
 				RpcHelper.writeJsonObject(response, resJSON);

@@ -7,54 +7,38 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
+import entity.Order.OrderBuilder;
+
 public class Machine {
 	private String machineId;
-	private String status;
+	private Status status;
 	private String stationId;
 	private String type;
 	private Location location;
 	private Set<String>  orderId;
 	
-	public String toJSONObject() {
-		JSONObject obj = new JSONObject();
-		try {
-			obj.put("machineId", machineId);
-			obj.put("status", status);
-			obj.put("stationId", stationId);
-			obj.put("machineId", machineId);
-			obj.put("type", type);
-			obj.put("location", location);
-			//obj.put("orderId", String.join(", ", orderId));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public class Status{
+		private String OK;
+		private String OnUse;
+		public String getOK() {
+			return OK;
 		}
-		return obj.toString();
+		public String getOnUse() {
+			return OnUse;
+		}	
+		
 	}
 	
+	public String toJSONString() {
+		return new Gson().toJson(this);
+	}
 	
-	public void setMachineId(String machineId) {
-		this.machineId = machineId;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public void setStation(String stationId) {
-		this.stationId = stationId;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-	public void setOrderId(Set<String> orderId) {
-		this.orderId = orderId;
-	}
 	public String getMachineId() {
 		return machineId;
 	}
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 	public String getStationId() {
@@ -69,6 +53,48 @@ public class Machine {
 	public Set<String> getOrderId() {
 		return orderId;
 	}
+	private Machine(MachineBuilder builder) {
+		this.machineId = builder.machineId;
+		this.status = builder.status;
+		this.stationId = builder.stationId;
+		this.type = builder.type;
+		this.location = builder.location;
+	}
 	
+	public static class MachineBuilder {
+		private String machineId;
+		private Status status;
+		private String stationId;
+		private String type;
+		private Location location;
+		private Set<String>  orderId;
+		
+		public void setMachineId(String machineId) {
+			this.machineId = machineId;
+		}
+		public void setStatus(Status status) {
+			this.status = status;
+		}
+
+		public void setStationId(String stationId) {
+			this.stationId = stationId;
+		}
+
+		public void setType(String type) {
+			this.type = type;
+		}
+
+		public void setLocation(Location location) {
+			this.location = location;
+		}
+
+		public void setOrderId(Set<String> orderId) {
+			this.orderId = orderId;
+		}	
+		
+		public Machine build() {
+			return new Machine(this);
+		}
+	}
 	
 }

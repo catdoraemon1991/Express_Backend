@@ -1,8 +1,8 @@
 package entity;
 
 public class Station {
-	private String stationId;
-	Location location;
+	private final String stationId;
+	private final Location location;
 	public Station(String stationId, Location location) {
 		this.stationId = stationId;
 		this.location = location;
@@ -13,13 +13,6 @@ public class Station {
 //		this.location = null;
 //	}
 	
-	public void setStationId(String stationId) {
-		this.stationId = stationId;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
 	
 	public String getStationId() {
 		return stationId;
