@@ -43,4 +43,29 @@ public class RpcHelper {
 				}
 				return new JSONObject();
 			}
+			public static String deduplicate(String address) {
+				char[] addArray = address.toCharArray();
+				int slow = 0;
+				int fast = 0;
+				while (fast < address.length() && addArray[fast] == ' ')  fast++;
+				while (fast < address.length()) {
+					if (addArray[fast] != ' ') {
+						addArray[slow++] = addArray[fast++];
+					}else {
+						while (fast < address.length() && addArray[fast] == ' ')  fast++;
+						if (fast < address.length() && addArray[fast] != ',') addArray[slow++] = ' ';					
+					}
+				}
+				if (addArray[slow - 1] == ' ') slow -= 1;
+				char[] res = new char[slow];
+				for(int i = 0; i < res.length; i++)  res[i] = addArray[i];
+				return String.valueOf(res);
+			}
+			public static String replaceBlank(String address) {
+				char[] addArray = address.toCharArray();
+				for(int i = 0; i < addArray.length; i++) {
+					if (addArray[i] == ' ') addArray[i] = '+';
+				}
+				return String.valueOf(addArray);
+			}
 }

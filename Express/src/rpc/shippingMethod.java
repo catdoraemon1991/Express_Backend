@@ -112,7 +112,7 @@ public class shippingMethod extends HttpServlet {
 		JSONObject dronePrice = new JSONObject();
 		JSONObject robotDuration = new JSONObject();
 		JSONObject droneDuration = new JSONObject();
-		double[] shippingAddressLatLon = GoogleAPI.addr_to_lonlat(shippingAddress);
+		Location shippingAddressLatLon = GoogleAPI.addr_to_latlng(shippingAddress);
 		try {
 			for (Station station : stations) {
 				//calculate quantity
@@ -122,18 +122,8 @@ public class shippingMethod extends HttpServlet {
 				robotQuantity.put(station.getStationId(), String.valueOf(robotMachines.size()));
 				droneQuantity.put(station.getStationId(), String.valueOf(droneMachines.size()));
 				//calculate duration
-				Double robotDurationDou = GoogleAPI.duration(
-						String.valueOf(station.getLocation().getLatitude()),
-						String.valueOf(station.getLocation().getLongitude()), 
-						String.valueOf(shippingAddressLatLon[0]), 
-						String.valueOf(shippingAddressLatLon[1]),
-						"robot");
-				Double droneDurationDou = GoogleAPI.duration(
-						String.valueOf(station.getLocation().getLatitude()),
-						String.valueOf(station.getLocation().getLongitude()), 
-						String.valueOf(shippingAddressLatLon[0]), 
-						String.valueOf(shippingAddressLatLon[1]),
-						"drone");
+				Double robotDurationDou = GoogleAPI.duration(station.getLocation(),shippingAddressLatLon,"robot");
+				Double droneDurationDou = GoogleAPI.duration(station.getLocation(), shippingAddressLatLon, "drone");
 				robotDuration.put(station.getStationId(), robotDurationDou);
 				droneDuration.put(station.getStationId(), droneDurationDou);
 				//calculate price
