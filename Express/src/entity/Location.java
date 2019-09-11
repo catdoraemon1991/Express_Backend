@@ -9,8 +9,8 @@ public class Location {
 		this.longitude = longitude;
 	}
 	public Location() {
-		this.latitude =  null;
-		this.longitude = null;
+		this.latitude =  -500D;
+		this.longitude = -500D;
 	}
 
 	public double getLatitude() {
