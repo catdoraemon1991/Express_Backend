@@ -23,7 +23,7 @@ public class Machine {
 		private String OK;
 		private String OnUse;
 		public String getOK() {
-			return OK;
+			return OK; 
 		}
 		public String getOnUse() {
 			return OnUse;
