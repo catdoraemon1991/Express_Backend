@@ -109,7 +109,6 @@ public class FirebaseConnection implements DBConnection {
 		String deleteStatus = HTTPHelper.doHTTP(String.format("%s/%s/orderId/%s.json", FirebaseUtil.machineUrl, machineId, orderId)
 				, null,HTTPUtil.delete);
 		String orderIds = HTTPHelper.doHTTP(String.format("%s/%s/orderId.json",FirebaseUtil.machineUrl, machineId),null,HTTPUtil.get);
-		System.out.println(orderIds);
 		if (orderIds == null) {
 			String changeStatus = HTTPHelper.doHTTP(String.format("%s/%s/status.json", FirebaseUtil.machineUrl, machineId)
 					, FirebaseUtil.statusOK,HTTPUtil.put);
