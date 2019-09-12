@@ -7,24 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-
-import db.DBConnection;
-import db.DBConnectionFactory;
-import db.firebase.FirebaseConnection;
 import db.firebase.FirebaseUtil;
-import entity.Location;
-import entity.Machine;
-import entity.Station;
 
 public class HTTPHelper {
 	/**
@@ -37,9 +24,9 @@ public class HTTPHelper {
 	 * when using "POST" and "PUT", jsonInputString should be not null, or your output will be null
 	 */
 	public static String doHTTP(String urlLink, String jsonInputString, String method) {
-		if(method.equals(HTTPUtil.get) || method.equals(HTTPUtil.delete)) {
+		if(method.equals("GET") || method.equals("DELETE")) {
 			if (jsonInputString != null) return null;
-		}else if (method.equals(HTTPUtil.post) || method.equals(HTTPUtil.put)) {
+		}else if (method.equals("POST") || method.equals("PUT")) {
 			if (jsonInputString == null) return null;
 		}else {
 			return null;
@@ -78,8 +65,7 @@ public class HTTPHelper {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		if (method.equals(HTTPUtil.get) || method.equals(HTTPUtil.post)) {
-			if (content.toString().equals("null"))  return null;
+		if (method.equals("GET")) {
 			return content.toString();
 		}else {
 			return String.valueOf(status);
@@ -88,21 +74,17 @@ public class HTTPHelper {
 	};
 	
 	
-	public static void main(String[] args) throws JSONException {
-		String  getUrl = "https://express-1c6b7.firebaseio.com/machine/robotB1/orderId.json";
+	public static void main(String[] args) {
+		String  getUrl = FirebaseUtil.host + "machine.json";
 		//String jsonInputString = "{\"name\": \"Doraemon\", \"job\": \"Best idol\"}";
 		String jsonInputString = "{\" \": \" \"}";
 		String postUrl = FirebaseUtil.host + "user2.json";
 		String deleteUrl = FirebaseUtil.host + "user2.json";
 		String putUrl = FirebaseUtil.host + "user/" + "-LnddvEBLrD4P4vntNLh" + "/orderId/" + "456" + ".json";
-		String resGet = doHTTP(getUrl,null,"GET");
+		//String resGet = doGet(getUrl);
+		String resGet = doHTTP(postUrl,jsonInputString,"PUT");
 		//JSONObject newjson = new JSONObject(resGet);
-		//JSONObject getJSON = new JSONObject(resGet);
-		//JSONObject robotB1 =  (JSONObject) getJSON.get("robotB1");
-		//DBConnection db = DBConnectionFactory.getConnection();
-		//List<Machine> machines = db.getMachineByType(db.getMachine("B"), "robot");
-		StringBuffer content = new StringBuffer();
-		System.out.println(content == null);
+		System.out.println(resGet);
 		//String resPost = doPost(postUrl, jsonInputString);
 		//Integer resDelete =  doDelete(deleteUrl);
 		//Integer resPut = doPut(putUrl, jsonInputString);
