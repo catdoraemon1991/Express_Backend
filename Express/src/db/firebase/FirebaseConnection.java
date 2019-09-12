@@ -108,9 +108,9 @@ public class FirebaseConnection implements DBConnection {
 	public void updateStatus(String orderId, String machineId) {
 		String deleteStatus = HTTPHelper.doHTTP(String.format("%s/%s/orderId/%s.json", FirebaseUtil.machineUrl, machineId, orderId)
 				, null,HTTPUtil.delete);
-		String machineStr = HTTPHelper.doHTTP(String.format("%s/%s.json",FirebaseUtil.machineUrl, machineId),null,HTTPUtil.get);
-		Machine machine = new Gson().fromJson(machineStr.toString(), Machine.class);
-		if (machine.getOrderId() == null) {
+		String orderIds = HTTPHelper.doHTTP(String.format("%s/%s/orderId.json",FirebaseUtil.machineUrl, machineId),null,HTTPUtil.get);
+		System.out.println(orderIds);
+		if (orderIds == null) {
 			String changeStatus = HTTPHelper.doHTTP(String.format("%s/%s/status.json", FirebaseUtil.machineUrl, machineId)
 					, FirebaseUtil.statusOK,HTTPUtil.put);
 		}			

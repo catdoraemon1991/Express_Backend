@@ -17,7 +17,7 @@ public class Machine {
 	private String stationId;
 	private String type;
 	private Location location;
-	private Set<String>  orderId;
+	//private Set<String>  orderId;
 	
 	public class Status{
 		private String OK;
@@ -50,9 +50,9 @@ public class Machine {
 	public Location getLocation() {
 		return location;
 	}
-	public Set<String> getOrderId() {
-		return orderId;
-	}
+//	public Set<String> getOrderId() {
+//		return orderId;
+//	}
 	private Machine(MachineBuilder builder) {
 		this.machineId = builder.machineId;
 		this.status = builder.status;
@@ -67,7 +67,7 @@ public class Machine {
 		private String stationId;
 		private String type;
 		private Location location;
-		private Set<String>  orderId;
+		//private Set<String>  orderId;
 		
 		public void setMachineId(String machineId) {
 			this.machineId = machineId;
@@ -88,9 +88,9 @@ public class Machine {
 			this.location = location;
 		}
 
-		public void setOrderId(Set<String> orderId) {
-			this.orderId = orderId;
-		}	
+//		public void setOrderId(Set<String> orderId) {
+//			this.orderId = orderId;
+//		}	
 		
 		public Machine build() {
 			return new Machine(this);
