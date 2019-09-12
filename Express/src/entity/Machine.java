@@ -58,7 +58,7 @@ public class Machine {
 		return status;
 	}
 	public String getStationId() {
-		return stationId;
+		return stationId; 
 	}
 	public String getType() {
 		return type;
