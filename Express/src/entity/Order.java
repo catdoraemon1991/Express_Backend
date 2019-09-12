@@ -3,10 +3,7 @@ package entity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
-
 public class Order {
-	private String orderId;
 	private String userId;
 	private String shippingAddress;
 	private String destination;
@@ -16,9 +13,6 @@ public class Order {
 	private Long pickupTime;
 	private Long deliveryTime;
 	private Long shippingTime;
-	public String getOrderId() {
-		return orderId;
-	}
 	public String getUserId() {
 		return userId;
 	}
@@ -48,7 +42,6 @@ public class Order {
 	}
 	
 	private Order(OrderBuilder builder) {
-		this.orderId = builder.orderId;
 		this.userId = builder.userId;
 		this.shippingAddress = builder.shippingAddress;
 		this.destination = builder.destination;
@@ -60,12 +53,26 @@ public class Order {
 		this.shippingTime = builder.shippingTime;
 	}
 	
-	public String toJSONString() {
-		return new Gson().toJson(this);
+	public String toJSONObject() {
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("userId", userId);
+			obj.put("shippingAddress", shippingAddress);
+			obj.put("destination", destination);
+			obj.put("shippingMethod", shippingMethod);
+			obj.put("machineId", machineId);
+			obj.put("departTime", departTime.toString());
+			obj.put("pickupTime", pickupTime.toString());
+			obj.put("deliveryTime", deliveryTime.toString());
+			obj.put("shippingTime", shippingTime.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj.toString();
 	}
 	
 	public static class OrderBuilder {
-		private String orderId;
 		private String userId;
 		private String shippingAddress;
 		private String destination;
@@ -76,9 +83,6 @@ public class Order {
 		private Long deliveryTime;
 		private Long shippingTime;
 		
-		public void setOrderId(String orderId) {
-			this.orderId = orderId;
-		}
 		public void setUserId(String userId) {
 			this.userId = userId;
 		}
