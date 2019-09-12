@@ -1,11 +1,11 @@
-package google_api;
+package external;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.servlet.http.HttpServletRequest;
+import java.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
