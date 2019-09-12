@@ -60,13 +60,7 @@ public class Machine {
 		this.type = builder.type;
 		this.location = builder.location;
 	}
-	private Machine(MachineBuilder builder) {
-		this.machineId = builder.machineId;
-		this.status = builder.status;
-		this.stationId = builder.stationId;
-		this.type = builder.type;
-		this.location = builder.location;
-	}
+
 	
 	public static class MachineBuilder {
 		private String machineId;
