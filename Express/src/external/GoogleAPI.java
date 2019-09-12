@@ -98,7 +98,7 @@ public class GoogleAPI {
 	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	    double distance = R * c * 1000; // convert to meters
 	    
-	    return Math.round(distance / (carrier_speed * 60));
+	    return (distance / (carrier_speed * 60));
 	}
 	
 	

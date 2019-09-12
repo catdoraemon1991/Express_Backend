@@ -101,17 +101,14 @@ public class HTTPHelper {
 		//JSONObject robotB1 =  (JSONObject) getJSON.get("robotB1");
 		//DBConnection db = DBConnectionFactory.getConnection();
 		//List<Machine> machines = db.getMachineByType(db.getMachine("B"), "robot");
-		StringBuffer content = new StringBuffer();
-		System.out.println(content == null);
-		//String resPost = doPost(postUrl, jsonInputString);
-		//Integer resDelete =  doDelete(deleteUrl);
-		//Integer resPut = doPut(putUrl, jsonInputString);
-		
-//		String[] array = {"1","2","3","4"};
-//		String toArray = "1,2,3";
-//		System.out.println(toArray);
-//		String[] test = toArray.split(",");
-//		System.out.println(test[0]);
+		//StringBuffer content = new StringBuffer();
+		String address = "  1310   Junipero   Serra   Blvd  , San Francisco, CA 94132   ";
+		String newAddr = RpcHelper.deduplicate(address);
+		String newAddr2 = RpcHelper.replaceBlank(newAddr);
+		System.out.println(newAddr);
+		System.out.println(newAddr2);
+
+
 		
 		Calendar calendar1 = Calendar.getInstance(TimeZone.getTimeZone("PST"));
 

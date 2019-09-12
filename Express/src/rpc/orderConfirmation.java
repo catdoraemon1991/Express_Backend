@@ -75,10 +75,10 @@ public class orderConfirmation extends HttpServlet {
 				userId = orderInfo.getString(RpcUtil.userId);
 			}
 			if (! orderInfo.isNull(RpcUtil.shippingAddress)) {
-				shippingAddress = orderInfo.getString(RpcUtil.shippingAddress);
+				shippingAddress = RpcHelper.deduplicate( orderInfo.getString(RpcUtil.shippingAddress) );
 			}
 			if (! orderInfo.isNull(RpcUtil.destination)) {
-				destination = orderInfo.getString(RpcUtil.destination);
+				destination = RpcHelper.deduplicate( orderInfo.getString(RpcUtil.destination) );
 			}
 			if (! orderInfo.isNull(RpcUtil.shippingTime)) {
 				shippingTime = Long.valueOf(orderInfo.getString(RpcUtil.shippingTime));
@@ -132,8 +132,8 @@ public class orderConfirmation extends HttpServlet {
 			db.machineOccupied(machineId);  //uncomment this		
 		}
 		// step 4: calculate departTime, pickupTime and deliveryTime from Google API
-		double[] shipLatLon = GoogleAPI.addr_to_latlng(shippingAddress);
-		double[] desLatLon = GoogleAPI.addr_to_latlng(destination);
+		double[] shipLatLon = GoogleAPI.addr_to_latlng(RpcHelper.replaceBlank(shippingAddress));
+		double[] desLatLon = GoogleAPI.addr_to_latlng(RpcHelper.replaceBlank(destination));
 		Location stationLoc = db.getStationById(db.getStation(new Location()), stationId).getLocation();
 		
 		double stationToShip = GoogleAPI.duration(stationLoc, new Location(shipLatLon[0],shipLatLon[1]), type);
@@ -146,9 +146,9 @@ public class orderConfirmation extends HttpServlet {
 		long processing = 1000L * 60L * 2L;
 		
 		departTime = Math.max(currentDate + processing, shippingTime);	
-		pickupTime = departTime + 1000L * 60L * Math.round(stationToShip); 
-		deliveryTime = pickupTime + 1000L * 60L * Math.round(shipToDes); 
-		Long backTime = currentDate + 1000L * 15L; //
+		pickupTime = departTime + Math.round(1000L * 60L * stationToShip); 
+		deliveryTime = pickupTime + Math.round(1000L * 60L * shipToDes); 
+		Long backTime = currentDate + 1000L * 60L; //
 		//Long backTime = deliveryTime + 1000L * 60L * Math.round(desToStation); //
 		
 		back.setTimeInMillis(backTime);
