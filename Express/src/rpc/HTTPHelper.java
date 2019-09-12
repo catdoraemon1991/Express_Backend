@@ -79,6 +79,7 @@ public class HTTPHelper {
 			e.printStackTrace();
 		}
 		if (method.equals(HTTPUtil.get) || method.equals(HTTPUtil.post)) {
+			if (content.toString().equals("null"))  return null;
 			return content.toString();
 		}else {
 			return String.valueOf(status);
@@ -88,20 +89,20 @@ public class HTTPHelper {
 	
 	
 	public static void main(String[] args) throws JSONException {
-		String  getUrl = FirebaseUtil.host + "/machine.json";
+		String  getUrl = "https://express-1c6b7.firebaseio.com/machine/robotB1/orderId.json";
 		//String jsonInputString = "{\"name\": \"Doraemon\", \"job\": \"Best idol\"}";
 		String jsonInputString = "{\" \": \" \"}";
 		String postUrl = FirebaseUtil.host + "user2.json";
 		String deleteUrl = FirebaseUtil.host + "user2.json";
 		String putUrl = FirebaseUtil.host + "user/" + "-LnddvEBLrD4P4vntNLh" + "/orderId/" + "456" + ".json";
-		//String resGet = doGet(getUrl);
-		//String resGet = doHTTP(getUrl,null,"GET");
+		String resGet = doHTTP(getUrl,null,"GET");
 		//JSONObject newjson = new JSONObject(resGet);
 		//JSONObject getJSON = new JSONObject(resGet);
 		//JSONObject robotB1 =  (JSONObject) getJSON.get("robotB1");
-		DBConnection db = DBConnectionFactory.getConnection();
-		List<Machine> machines = db.getMachineByType(db.getMachine("B"), "robot");
-		System.out.println(machines.get(0).toJSONString());
+		//DBConnection db = DBConnectionFactory.getConnection();
+		//List<Machine> machines = db.getMachineByType(db.getMachine("B"), "robot");
+		StringBuffer content = new StringBuffer();
+		System.out.println(content == null);
 		//String resPost = doPost(postUrl, jsonInputString);
 		//Integer resDelete =  doDelete(deleteUrl);
 		//Integer resPut = doPut(putUrl, jsonInputString);
