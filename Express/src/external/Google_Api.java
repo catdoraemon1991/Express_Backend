@@ -5,16 +5,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.json.JSONObject;
+
+import entity.Location;
+
 import org.json.JSONArray;
 
 
 public class Google_Api {
 	
 	public static String API_KEY = "AIzaSyCMUv0b5DrWEeTUrHmO57WR-LpaDudaxwM";
-	public static String TEST_ADDRESS = "9500+Gilman+Dr,+La+Jolla,+CA+92093";
+	public static String TEST_ADDRESS = "9500 Gilman Dr, La Jolla, CA 92093";
 	public static double carrier_speed = 12;
 	
 	//https://maps.googleapis.com/maps/api/geocode/json?address=9500+Gilman+Dr,+La+Jolla,+CA+92093&key=AIzaSyCMUv0b5DrWEeTUrHmO57WR-LpaDudaxwM
@@ -22,9 +23,10 @@ public class Google_Api {
 	//Method 1: Convert address string to latitude and longitude.
 	public static double[] addr_to_latlng(String address) {
 		try { 
+			address = address.replaceAll("\\s", "+");
 			String prefix = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 			String keyHead = "&key=";
-			String request = prefix + TEST_ADDRESS + keyHead + API_KEY;
+			String request = prefix + address + keyHead + API_KEY;
 			
 			//Concatenate URL
 			URL url = new URL(request);
@@ -78,8 +80,7 @@ public class Google_Api {
 	
 	
 	//Method 2: Calculate time for spherical distance of two locations based on latitude and longitude
-	public static double sphr_dist(Location Start, Location Dest) {
-		//Convert string to double
+	public static double sphr_time(Location Start, Location Dest) {
 		double lat1 = Start.getLatitude();
 		double lat2 = Dest.getLatitude();
 		double lng1 = Start.getLongitude();
@@ -93,13 +94,12 @@ public class Google_Api {
 	            + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
 	            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
 	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	    double distance = R * c * 1000; // convert to meters
+	    double distance = R * c * 1000; // Distance in meters
 	    
-	    return Math.round(distance / (carrier_speed*60));
+	    return distance / carrier_speed;
 	}
 	
 	
-	//origins=41.43206,-81.38992|-33.86748,151.20699
 	// method 3: calculate road distance of two location based on latitude and longitude
 	public static double road_time(Location Start, Location Dest) {
 		
@@ -173,12 +173,17 @@ public class Google_Api {
 	
 	
 	public static void main(String[] args)  {
-//		double[] result = addr_to_lonlat(TEST_ADDRESS);
-//		System.out.println(result[0]);
-//		System.out.println(result[1]);
+		double[] result = addr_to_latlng(TEST_ADDRESS);
+		System.out.println(result[0]);
+		System.out.println(result[1]);
+		
 		//41.43206,-81.38992|-33.86748,151.20699
-		double res = road_time("32.715736","-117.161087","34.0522","-118.243683");
-		System.out.print(res);
+		//double res = road_time("32.715736","-117.161087","34.0522","-118.243683");
+//		Location LA = new Location(34.0522, 118.2437);
+//		Location SD = new Location(32.7157, 117.1611);
+//		double distance = sphr_dist(LA, SD);
+//		System.out.print(distance);
+			
 	}
 	
 
