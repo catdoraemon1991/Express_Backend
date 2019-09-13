@@ -23,7 +23,7 @@ public class GoogleAPI {
 	//https://maps.googleapis.com/maps/api/geocode/json?address=9500+Gilman+Dr,+La+Jolla,+CA+92093&key=AIzaSyCMUv0b5DrWEeTUrHmO57WR-LpaDudaxwM
 	
 	//Method 1: Convert address string to latitude and longitude.
-	public static double[] addr_to_latlng(String address) {
+	public static Location addr_to_latlng(String address) {
 		try { 
 			String prefix = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 			String keyHead = "&key=";
@@ -40,7 +40,7 @@ public class GoogleAPI {
 			int status = connection.getResponseCode();
 			System.out.println("Status: "+status);
 			if (status != 200) {
-				return new double[2];
+				return new Location();
 			}
 			
 		
@@ -63,18 +63,15 @@ public class GoogleAPI {
 				JSONObject location = geometry.getJSONObject("location");
 				double latitude = location.getDouble("lat");
 				double longitude = location.getDouble("lng");
-				double[] latlng = new double[2];
-				latlng[0] = latitude;
-				latlng[1] = longitude;
-				return latlng;
+				return new Location(latitude,longitude);
 			} else {
-				return new double[2];
+				return new Location();
 			}
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return new double[2];
+		return new Location();
 	}
 	
 	
@@ -196,9 +193,9 @@ public class GoogleAPI {
 //		System.out.println(result[0]);
 //		System.out.println(result[1]);
 		//41.43206,-81.38992|-33.86748,151.20699
-		double[] loc1 = addr_to_latlng("2130+Fulton+St,+San+Francisco,+CA+94117");
-		double[] loc2 = addr_to_latlng("1310+Junipero+Serra+Blvd,+San+Francisco,+CA+94132");
-		double res = road_time(new Location(loc1[0],loc1[1]), new Location(loc2[0],loc2[1]));
+		Location loc1 = addr_to_latlng("2130+Fulton+St,+San+Francisco,+CA+94117");
+		Location loc2 = addr_to_latlng("1310+Junipero+Serra+Blvd,+San+Francisco,+CA+94132");
+		double res = road_time(loc1, loc2);
 		System.out.print(res);
 		//System.out.print(loc1[0] + "," + loc1[1]);
 		//System.out.print(loc2[0] + "," + loc2[1]);

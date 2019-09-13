@@ -81,7 +81,7 @@ public class orderConfirmation extends HttpServlet {
 				destination = RpcHelper.deduplicate( orderInfo.getString(RpcUtil.destination) );
 			}
 			if (! orderInfo.isNull(RpcUtil.shippingTime)) {
-				shippingTime = Long.valueOf(orderInfo.getString(RpcUtil.shippingTime));
+				shippingTime = orderInfo.getLong(RpcUtil.shippingTime);
 			}
 			if (! orderInfo.isNull(RpcUtil.shippingMethod)) {
 				type = orderInfo.getString(RpcUtil.shippingMethod);
@@ -132,13 +132,13 @@ public class orderConfirmation extends HttpServlet {
 			db.machineOccupied(machineId);  //uncomment this		
 		}
 		// step 4: calculate departTime, pickupTime and deliveryTime from Google API
-		double[] shipLatLon = GoogleAPI.addr_to_latlng(RpcHelper.replaceBlank(shippingAddress));
-		double[] desLatLon = GoogleAPI.addr_to_latlng(RpcHelper.replaceBlank(destination));
+		Location shipLatLon = GoogleAPI.addr_to_latlng(RpcHelper.replaceBlank(shippingAddress));
+		Location desLatLon = GoogleAPI.addr_to_latlng(RpcHelper.replaceBlank(destination));
 		Location stationLoc = db.getStationById(db.getStation(new Location()), stationId).getLocation();
 		
-		double stationToShip = GoogleAPI.duration(stationLoc, new Location(shipLatLon[0],shipLatLon[1]), type);
-		double shipToDes = GoogleAPI.duration(new Location(shipLatLon[0],shipLatLon[1]),new Location(desLatLon[0],desLatLon[1]),type);
-		double desToStation = GoogleAPI.duration(new Location(desLatLon[0],desLatLon[1]),stationLoc,type);
+		double stationToShip = GoogleAPI.duration(stationLoc, shipLatLon, type);
+		double shipToDes = GoogleAPI.duration(shipLatLon,desLatLon,type);
+		double desToStation = GoogleAPI.duration(desLatLon,stationLoc,type);
 		
 		Calendar ship = Calendar.getInstance(TimeZone.getTimeZone(RpcUtil.timeZone));
 		Calendar back = Calendar.getInstance(TimeZone.getTimeZone(RpcUtil.timeZone));
