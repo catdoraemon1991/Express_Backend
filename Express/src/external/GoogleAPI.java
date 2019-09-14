@@ -18,7 +18,7 @@ import rpc.HTTPUtil;
 public class GoogleAPI {
 	public static String API_KEY = "AIzaSyARtu9LC3znDAtBj1dC4SOitTCxvTLfAFc";
 	public static String TEST_ADDRESS = "9500+Gilman+Dr,+La+Jolla,+CA+92093";
-	public static double carrier_speed = 12.0;     //Speed in meters
+	public static double carrier_speed = 25.0;     //Speed in meters
 	
 	//https://maps.googleapis.com/maps/api/geocode/json?address=9500+Gilman+Dr,+La+Jolla,+CA+92093&key=AIzaSyCMUv0b5DrWEeTUrHmO57WR-LpaDudaxwM
 	
@@ -77,13 +77,11 @@ public class GoogleAPI {
 	
 	//Method 2: Calculate time for spherical distance of two locations based on latitude and longitude
 	// assuming the velocity of the carrier is 40 kph.
-	public static double sphr_time(Location start, Location destination) {
-		
-		//Convert string to double
-		double lat1 = start.getLatitude();
-		double lat2 = destination.getLatitude();
-		double lng1 = start.getLongitude();
-		double lng2 = start.getLongitude();
+	public static double sphr_time(Location Start, Location Dest) {
+		double lat1 = Start.getLatitude();
+		double lat2 = Dest.getLatitude();
+		double lng1 = Start.getLongitude();
+		double lng2 = Dest.getLongitude();
 		
 		final int R = 6371; // Radius of the earth
 
@@ -95,17 +93,17 @@ public class GoogleAPI {
 	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	    double distance = R * c * 1000; // convert to meters
 	    
-	    return (distance / (carrier_speed * 60));
+	    return distance / (carrier_speed * 60);
 	}
 	
 	
 	//origins=41.43206,-81.38992|-33.86748,151.20699
 	// method 3: calculate road distance of two location based on latitude and longitude
-	public static double road_time(Location start, Location destination) {
+	public static double road_time(Location Start, Location Dest) {
 		
 		try {
-			String origins = "&origins=" + start.getLatitude() + "," + start.getLongitude();
-			String destinations = "&destinations=" + destination.getLatitude() + "," + destination.getLongitude();
+			String origins = "&origins=" + Double.toString(Start.getLatitude()) + "," + Double.toString(Start.getLongitude());
+			String destinations = "&destinations=" + Double.toString(Dest.getLatitude()) + "," + Double.toString(Dest.getLongitude());
 			String prefix = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric";
 			String keyHead = "&key=";
 			String request = prefix + origins + destinations + keyHead + API_KEY;
@@ -148,9 +146,9 @@ public class GoogleAPI {
 					if (!elements_embedded.isNull(0)) {
 						JSONObject embedded = elements_embedded.getJSONObject(0);
 						if (!embedded.isNull("duration")) {
-							JSONObject distance = embedded.getJSONObject("duration");
-							double road_time_in_mins = distance.getDouble("value"); 
-							return Math.round(road_time_in_mins / 60.0);
+							JSONObject duration = embedded.getJSONObject("duration");
+							double time_in_sec = duration.getDouble("value"); 
+							return time_in_sec / 60;
 						}
 						
 						return -1.0;
@@ -184,6 +182,13 @@ public class GoogleAPI {
 		double volume = dimensionL * dimensionW * dimensionH;
 		double finalPrice = durationTime / 2.0 +  volume * 0.01 + weightLB * 0.5 + weightOC * 0.5;
 		return finalPrice;	
+	}
+	// method 6 : calculate current location for tracking
+	public static Location curLocOnMap(Location start, Location end, Long stTime, Long endTime, Long curTime, String type) {
+		Double partition = ((double) ((curTime - stTime) ) / ( (double) (endTime - stTime)));
+		Double latitude = start.getLatitude() + (end.getLatitude() -  start.getLatitude()) * partition;
+		Double longitude = start.getLongitude() + (end.getLongitude() -  start.getLongitude()) * partition;
+		return new Location(latitude,longitude);
 	}
 	
 	

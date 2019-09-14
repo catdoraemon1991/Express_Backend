@@ -1,7 +1,6 @@
 package rpc;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +24,6 @@ import entity.Location;
 import entity.Machine;
 import entity.Order;
 import entity.Order.OrderBuilder;
-import entity.Station;
 import external.GoogleAPI;;
 
 /**
@@ -60,64 +58,42 @@ public class orderConfirmation extends HttpServlet {
 		JSONObject resJSON = new JSONObject();
 		// step 2: From the JSON object, read order information
 		OrderBuilder newOrder = new OrderBuilder();
-		String stationId = RpcUtil.empty;
-		String type = RpcUtil.empty;
-		String userId = RpcUtil.empty;
-		String machineId = RpcUtil.empty;
-		String destination = RpcUtil.empty;
-		String shippingAddress = RpcUtil.empty;
+		String stationId = RpcUtil.EMPTY;
+		String shippingMechod = RpcUtil.EMPTY;
+		String userId = RpcUtil.EMPTY;
+		String machineId = RpcUtil.EMPTY;
+		String destination = RpcUtil.EMPTY;
+		String shippingAddress = RpcUtil.EMPTY;
 		Long shippingTime = null;
 		Long departTime = null;
 		Long pickupTime = null;
 		Long deliveryTime = null;
 		try {
-			if (! orderInfo.isNull(RpcUtil.userId)) {
-				userId = orderInfo.getString(RpcUtil.userId);
+			if (!orderInfo.isNull(RpcUtil.USER_ID)) {
+				userId = orderInfo.getString(RpcUtil.USER_ID);
 			}
-			if (! orderInfo.isNull(RpcUtil.shippingAddress)) {
-				shippingAddress = RpcHelper.deduplicate( orderInfo.getString(RpcUtil.shippingAddress) );
+			if (!orderInfo.isNull(RpcUtil.SHIPPING_ADDRESS)) {
+				shippingAddress = RpcHelper.deduplicate( orderInfo.getString(RpcUtil.SHIPPING_ADDRESS) );
 			}
-			if (! orderInfo.isNull(RpcUtil.destination)) {
-				destination = RpcHelper.deduplicate( orderInfo.getString(RpcUtil.destination) );
+			if (!orderInfo.isNull(RpcUtil.DESTINATION)) {
+				destination = RpcHelper.deduplicate( orderInfo.getString(RpcUtil.DESTINATION) );
 			}
-			if (! orderInfo.isNull(RpcUtil.shippingTime)) {
-				shippingTime = orderInfo.getLong(RpcUtil.shippingTime);
+			if (!orderInfo.isNull(RpcUtil.SHIPPING_TIME)) {
+				shippingTime = orderInfo.getLong(RpcUtil.SHIPPING_TIME);
 			}
-			if (! orderInfo.isNull(RpcUtil.shippingMethod)) {
-				type = orderInfo.getString(RpcUtil.shippingMethod);
+			if (!orderInfo.isNull(RpcUtil.SHIPPING_METHOD)) {
+				shippingMechod = orderInfo.getString(RpcUtil.SHIPPING_METHOD);
 			}
-			if (! orderInfo.isNull(RpcUtil.stationId)) {
-				stationId = orderInfo.getString(RpcUtil.stationId);
+			if (!orderInfo.isNull(RpcUtil.STATION_ID)) {
+				stationId = orderInfo.getString(RpcUtil.STATION_ID);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (userId.equals(RpcUtil.empty)) {
-			try {
-				resJSON.put("Error", "Wrong userId input");
-				RpcHelper.writeJsonObject(response, resJSON);
-				return;
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		// step 3: calculate robot availability, select a robot and update robot status
 		DBConnection db = DBConnectionFactory.getConnection();
-		List<Machine> machines = new ArrayList<>();
-		if (! stationId.equals(RpcUtil.empty) && ! type.equals(RpcUtil.empty)) {
-			machines = db.getMachineByType(db.getMachine(stationId), type);
-		}else {
-			try {
-				resJSON.put("Error", "Wrong shipping method input");
-				RpcHelper.writeJsonObject(response, resJSON);
-				return;
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-		}
+		List<Machine> machines = db.getMachineByType(db.getMachine(stationId), shippingMechod);
 		if (machines.size() == 0) {
 			try {
 				resJSON.put("Back", "Machine not available, please re-select");
@@ -134,22 +110,22 @@ public class orderConfirmation extends HttpServlet {
 		// step 4: calculate departTime, pickupTime and deliveryTime from Google API
 		Location shipLatLon = GoogleAPI.addr_to_latlng(RpcHelper.replaceBlank(shippingAddress));
 		Location desLatLon = GoogleAPI.addr_to_latlng(RpcHelper.replaceBlank(destination));
-		Location stationLoc = db.getStationById(db.getStation(new Location()), stationId).getLocation();
+		Location stationLoc = db.getStationById(stationId).getLocation();
 		
-		double stationToShip = GoogleAPI.duration(stationLoc, shipLatLon, type);
-		double shipToDes = GoogleAPI.duration(shipLatLon,desLatLon,type);
-		double desToStation = GoogleAPI.duration(desLatLon,stationLoc,type);
+		double stationToShip = GoogleAPI.duration(stationLoc, shipLatLon, shippingMechod);
+		double shipToDes = GoogleAPI.duration(shipLatLon,desLatLon,shippingMechod);
+		double desToStation = GoogleAPI.duration(desLatLon,stationLoc,shippingMechod);
 		
-		Calendar ship = Calendar.getInstance(TimeZone.getTimeZone(RpcUtil.timeZone));
-		Calendar back = Calendar.getInstance(TimeZone.getTimeZone(RpcUtil.timeZone));
+		Calendar ship = Calendar.getInstance(TimeZone.getTimeZone(RpcUtil.TIME_ZONE));
+		Calendar back = Calendar.getInstance(TimeZone.getTimeZone(RpcUtil.TIME_ZONE));
 		long currentDate = ship.getTimeInMillis();
-		long processing = 1000L * 60L * 2L;
+		long processing = RpcUtil.SECS_IN_MINUTE * RpcUtil.PROCESSING_TIME_IN_MINUTE;
 		
 		departTime = Math.max(currentDate + processing, shippingTime);	
-		pickupTime = departTime + Math.round(1000L * 60L * stationToShip); 
-		deliveryTime = pickupTime + Math.round(1000L * 60L * shipToDes); 
-		Long backTime = currentDate + 1000L * 60L; //
-		//Long backTime = deliveryTime + 1000L * 60L * Math.round(desToStation); //
+		pickupTime = departTime + Math.round(RpcUtil.SECS_IN_MINUTE * stationToShip); 
+		deliveryTime = pickupTime + Math.round(RpcUtil.SECS_IN_MINUTE * shipToDes); 
+		//Long backTime = currentDate + RpcUtil.SECS_IN_MINUTE; //
+		Long backTime = deliveryTime + Math.round(RpcUtil.SECS_IN_MINUTE * desToStation); //
 		
 		back.setTimeInMillis(backTime);
 		Date backDate = back.getTime();
@@ -160,7 +136,7 @@ public class orderConfirmation extends HttpServlet {
 		newOrder.setShippingAdress(shippingAddress);
 		newOrder.setDestination(destination);
 		newOrder.setShippingTime(shippingTime);
-		newOrder.setShippingMethod(type);
+		newOrder.setShippingMethod(shippingMechod);
 		newOrder.setMachineId(machineId);
 		newOrder.setDepartTime(departTime);
 		newOrder.setPickupTime(pickupTime);
@@ -171,9 +147,9 @@ public class orderConfirmation extends HttpServlet {
 		String newOrderStatus = db.saveOrder(userId, order); //uncomment this
 		
 		// step 7: return order Id & machine status	
-		if (newOrderStatus.equals(HTTPUtil.StatusOK)) {
+		if (newOrderStatus.equals(HTTPUtil.STATUSOK)) {
 			try {
-				resJSON.put(RpcUtil.orderId, newOrderId);
+				resJSON.put(RpcUtil.ORDER_ID, newOrderId);
 				RpcHelper.writeJsonObject(response, resJSON);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -186,7 +162,7 @@ public class orderConfirmation extends HttpServlet {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-				System.out.println(RpcUtil.updateMesg);
+				System.out.println(RpcUtil.UPDATE_MESG);
 				db.updateStatus(newOrderId, machineIdF);  //uncomment this
 			}
 		};

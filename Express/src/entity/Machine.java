@@ -1,21 +1,14 @@
 package entity;
 
 
-import java.util.Set;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.google.gson.Gson;
 
-import entity.Order.OrderBuilder;
 
 public class Machine {
-	private String machineId;
-	private Status status;
-	private String stationId;
-	private String type;
+	private final String machineId;
+	private final Status status;
+	private final String stationId;
+	private final String type;
 	private Location location;
 	//private Set<String>  orderId;
 	

@@ -1,21 +1,19 @@
 package entity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
 public class Order {
-	private String orderId;
-	private String userId;
-	private String shippingAddress;
-	private String destination;
-	private String shippingMethod;
-	private String machineId;
-	private Long departTime;
-	private Long pickupTime;
-	private Long deliveryTime;
-	private Long shippingTime;
+	private final String orderId;
+	private final String userId;
+	private final String shippingAddress;
+	private final String destination;
+	private final String shippingMethod;
+	private final String machineId;
+	private final Long departTime;
+	private final Long pickupTime;
+	private final Long deliveryTime;
+	private final Long shippingTime;
 	public String getOrderId() {
 		return orderId;
 	}

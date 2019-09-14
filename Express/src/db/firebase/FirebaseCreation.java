@@ -6,8 +6,8 @@ import rpc.HTTPHelper;
 
 public class FirebaseCreation {
 	public static void main(String[] args) {
-		//addRobot(9);
-		//addDrone(9);
+		addRobot(9);
+		addDrone(9);
 		addStation();
 	}
 	

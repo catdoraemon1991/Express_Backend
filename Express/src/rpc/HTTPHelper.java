@@ -37,9 +37,9 @@ public class HTTPHelper {
 	 * when using "POST" and "PUT", jsonInputString should be not null, or your output will be null
 	 */
 	public static String doHTTP(String urlLink, String jsonInputString, String method) {
-		if(method.equals(HTTPUtil.get) || method.equals(HTTPUtil.delete)) {
+		if(method.equals(HTTPUtil.GET) || method.equals(HTTPUtil.DELETE)) {
 			if (jsonInputString != null) return null;
-		}else if (method.equals(HTTPUtil.post) || method.equals(HTTPUtil.put)) {
+		}else if (method.equals(HTTPUtil.POST) || method.equals(HTTPUtil.PUT)) {
 			if (jsonInputString == null) return null;
 		}else {
 			return null;
@@ -78,7 +78,7 @@ public class HTTPHelper {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		if (method.equals(HTTPUtil.get) || method.equals(HTTPUtil.post)) {
+		if (method.equals(HTTPUtil.GET) || method.equals(HTTPUtil.POST)) {
 			if (content.toString().equals("null"))  return null;
 			return content.toString();
 		}else {
@@ -89,24 +89,20 @@ public class HTTPHelper {
 	
 	
 	public static void main(String[] args) throws JSONException {
-		String  getUrl = "https://express-1c6b7.firebaseio.com/machine/robotB1/orderId.json";
+		String  getUrl = "https://express-1c6b7.firebaseio.com/user2.json";
 		//String jsonInputString = "{\"name\": \"Doraemon\", \"job\": \"Best idol\"}";
-		String jsonInputString = "{\" \": \" \"}";
+		String jsonInputString = "{\"user3\":[{\"name\":\"cat\"},{\"age\":18}]}";
 		String postUrl = FirebaseUtil.host + "user2.json";
 		String deleteUrl = FirebaseUtil.host + "user2.json";
-		String putUrl = FirebaseUtil.host + "user/" + "-LnddvEBLrD4P4vntNLh" + "/orderId/" + "456" + ".json";
-		String resGet = doHTTP(getUrl,null,"GET");
+		String putUrl = FirebaseUtil.host + "/user2.json";
+		//String resPut = doHTTP(getUrl,jsonInputString,"PUT");
 		//JSONObject newjson = new JSONObject(resGet);
 		//JSONObject getJSON = new JSONObject(resGet);
 		//JSONObject robotB1 =  (JSONObject) getJSON.get("robotB1");
-		//DBConnection db = DBConnectionFactory.getConnection();
-		//List<Machine> machines = db.getMachineByType(db.getMachine("B"), "robot");
-		//StringBuffer content = new StringBuffer();
-		String address = "  1310   Junipero   Serra   Blvd  , San Francisco, CA 94132   ";
-		String newAddr = RpcHelper.deduplicate(address);
-		String newAddr2 = RpcHelper.replaceBlank(newAddr);
-		System.out.println(newAddr);
-		System.out.println(newAddr2);
+		DBConnection db = DBConnectionFactory.getConnection();
+		//List<Machine> machines = db.getMachine(null);
+		List<Station> stations = db.getStation(new Location());
+		//System.out.println(station.getLocation().getLatitude());
 
 
 		
