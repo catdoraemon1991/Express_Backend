@@ -33,6 +33,12 @@ public interface DBConnection {
 	 */
 	public List<Machine> getMachineByType(List<Machine> machines, String type);
 	/**
+	 * Get all the machine by its Id
+	 * @param machines
+	 * @return machines
+	 */
+	public Machine getMachineById(String machineId);
+	/**
 	 * Get all stations
 	 * @param List<Machine>
 	 * @param type
@@ -41,11 +47,16 @@ public interface DBConnection {
 	public List<Station> getStation(Location location);
 	/**
 	 * Get all stations
-	 * @param List<Machine>
 	 * @param stationId
 	 * @return Station
 	 */
-	public Station getStationById(List<Station> stations,String stationId);
+	public Station getStationById(String stationId);
+	/**
+	 * Get order by Id
+	 * @param orderId
+	 * @return Order
+	 */
+	public Order getOrderById(String orderId);
 	/**
 	 * Update order status to machine
 	 * @param orderId
