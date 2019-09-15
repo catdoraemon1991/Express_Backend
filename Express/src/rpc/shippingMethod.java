@@ -80,12 +80,12 @@ public class shippingMethod extends HttpServlet {
 				shippingAddress = RpcHelper.replaceBlank(shippingAddress);
 			}
 			if (!shippingDetails.isNull(RpcUtil.SHIPPING_TIME)) {
-				shippingTime = Long.valueOf(shippingDetails.getString(RpcUtil.SHIPPING_TIME));
+				shippingTime = shippingDetails.getLong(RpcUtil.SHIPPING_TIME);
 			}
 			if (!shippingDetails.isNull(RpcUtil.ITEM_SIZE)) {
 				itemSize = shippingDetails.getString(RpcUtil.ITEM_SIZE);
 			}
-			if (destination.isEmpty()|| shippingAddress.isEmpty() || itemSize.isEmpty()) {
+			if (destination.isEmpty()|| shippingAddress.isEmpty() || itemSize.isEmpty()|| shippingTime==null) {
 				resJSON.put("Error", RpcUtil.ENTER_ERROR);
 				RpcHelper.writeJsonObject(response, resJSON);
 				return;
@@ -94,7 +94,7 @@ public class shippingMethod extends HttpServlet {
 			List<Station> stations = db.getStation(new Location());
 			Location shippingAddressLatLng = GoogleAPI.addr_to_latlng(shippingAddress);
 			Location destinationLatLng = GoogleAPI.addr_to_latlng(destination);
-			if (shippingAddressLatLng.equals(new Location()) || destinationLatLng.equals(new Location())) {
+			if (shippingAddressLatLng.getLatitude()<-400D || destinationLatLng.getLatitude()<-400D ) {
 				resJSON.put("Error", RpcUtil.Address_ERROR);
 				RpcHelper.writeJsonObject(response, resJSON);
 				return;

@@ -47,6 +47,9 @@ public class RpcHelper {
 				return new JSONObject();
 			}
 			public static String deduplicate(String address) {
+				if (address.equals(RpcUtil.EMPTY)) {
+					return RpcUtil.EMPTY;
+				}
 				char[] addArray = address.toCharArray();
 				int slow = 0;
 				int fast = 0;
@@ -65,6 +68,9 @@ public class RpcHelper {
 				return String.valueOf(res);
 			}
 			public static String replaceBlank(String address) {
+				if (address.equals(RpcUtil.EMPTY)) {
+					return RpcUtil.EMPTY;
+				}
 				char[] addArray = address.toCharArray();
 				for(int i = 0; i < addArray.length; i++) {
 					if (addArray[i] == ' ') addArray[i] = '+';

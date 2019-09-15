@@ -19,5 +19,5 @@ public class RpcUtil {
 	public static final String DELIVER_MESG = "delivered";
 	public static final String ITEM_SIZE="size";
 	public static final String ENTER_ERROR="Please Enter All Necessary Information";
-	public static final String Address_ERROR="Please Enter True Address";
+	public static final String Address_ERROR="Invalid shipping address, please verify using google map";
 }
