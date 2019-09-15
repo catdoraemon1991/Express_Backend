@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import entity.ShippingInfo;
+
 public class RpcHelper {
 	// Writes a JSONArray to http response.
 			public static void writeJsonArray(HttpServletResponse response, JSONArray array) throws IOException{
@@ -39,6 +41,7 @@ public class RpcHelper {
 			  		return new JSONObject(sBuilder.toString());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
+					System.out.println("111");
 					e.printStackTrace();
 				}
 				return new JSONObject();

@@ -17,4 +17,9 @@ public class RpcUtil {
 	public static final String DEPART_MESG = "departed, on its way to pickup";
 	public static final String PICKUP_MESG = "picked up, on its way to destination";
 	public static final String DELIVER_MESG = "delivered";
+
+	public static final String ITEM_SIZE="size";
+	public static final String ENTER_ERROR="Please Enter All Necessary Information";
+	public static final String Address_ERROR="Invalid shipping address, please verify using google map";
+
 }

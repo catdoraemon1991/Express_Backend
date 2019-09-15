@@ -1,3 +1,7 @@
 /build/
+<<<<<<< HEAD
 .DS_Store
 */.DS_Store
+=======
+**/.DS_Store
+>>>>>>> 7324b906a20f061b534915438a5167d171ad44d8
