@@ -57,7 +57,7 @@ public class RpcHelper {
 					}
 				}
 				if (addArray[slow - 1] == ' ') slow -= 1;
-				char[] res = new char[slow + 1];
+				char[] res = new char[slow];
 				for(int i = 0; i < res.length; i++)  res[i] = addArray[i];
 				return String.valueOf(res);
 			}

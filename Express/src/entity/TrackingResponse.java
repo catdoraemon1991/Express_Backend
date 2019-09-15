@@ -38,6 +38,7 @@ public class TrackingResponse {
 		this.status = builder.status;
 	}
 	
+	
 	public static class TrackingResponseBuilder{
 		private Location currentLocation;
 		private Location station;
